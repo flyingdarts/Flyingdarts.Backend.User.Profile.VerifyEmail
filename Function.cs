@@ -14,7 +14,7 @@ var innerHandler = new InnerHandler(services);
 var serializer = new DefaultLambdaJsonSerializer(x => x.PropertyNameCaseInsensitive = true);
 
 // Define the Lambda function handler
-var handler = (ILambdaContext context) =>
+var handler = (string input, ILambdaContext context) =>
 {
     // Handle the socketRequest using the innerHandler
     innerHandler.Handle(context).RunSynchronously();
