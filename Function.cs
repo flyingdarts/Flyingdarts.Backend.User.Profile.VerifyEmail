@@ -14,10 +14,10 @@ var innerHandler = new InnerHandler(services);
 var serializer = new DefaultLambdaJsonSerializer(x => x.PropertyNameCaseInsensitive = true);
 
 // Define the Lambda function handler
-var handler = (string input, ILambdaContext context) =>
+var handler = async (string input, ILambdaContext context) =>
 {
     // Handle the socketRequest using the innerHandler
-    innerHandler.Handle(context).RunSynchronously();
+    await innerHandler.Handle(context);
 };
 
 // Create and run the Lambda function
