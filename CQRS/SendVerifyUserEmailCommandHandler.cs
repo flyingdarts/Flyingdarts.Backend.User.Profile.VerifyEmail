@@ -15,10 +15,10 @@ public class SendVerifyUserEmailCommandHandler : IRequestHandler<SendVerifyUserE
     }
     public async Task Handle(SendVerifyUserEmailCommand request, CancellationToken cancellationToken)
     {
-        await SendEmail();
+        await SendEmail(cancellationToken);
     }
 
-    public async Task SendEmail()
+    public async Task SendEmail(CancellationToken cancellationToken)
     {
         // Build the email request
         var sendRequest = new SendEmailRequest
@@ -52,7 +52,7 @@ public class SendVerifyUserEmailCommandHandler : IRequestHandler<SendVerifyUserE
 
         try
         {
-            await _emailService.SendEmailAsync(sendRequest);
+            await _emailService.SendEmailAsync(sendRequest, cancellationToken);
         }
         catch (Exception ex)
         {
