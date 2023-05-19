@@ -6,9 +6,5 @@ public class SendVerifyUserEmailCommand : IRequest
     public string Email { get; set; }
     public string Subject { get; set; }
     public string Body { get; set; }
-    internal ILambdaContext Context;
-    public SendVerifyUserEmailCommand(ILambdaContext context)
-    {
-        Context = context;
-    } 
+    internal ILambdaContext Context { get; set; }
 }
