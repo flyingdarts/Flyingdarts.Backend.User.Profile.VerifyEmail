@@ -21,26 +21,18 @@ public class SendVerifyUserEmailCommandHandler : IRequestHandler<SendVerifyUserE
             Source = "support@flyingdarts.net", // Replace with your email address
             Destination = new Destination
             {
-                ToAddresses = new List<string> { "mike@flyingdarts.net" } // Replace with the recipient's email address
+                ToAddresses = new List<string> { request.Email } // Replace with the recipient's email address
             },
             Message = new Message
             {
-                Subject = new Content("Hello from Amazon SES"), // Replace with your desired subject
+                Subject = new Content(request.Subject), // Replace with your desired subject
                 Body = new Body
                 {
                     Text = new Content
                     {
                         Charset = "UTF-8",
-                        Data = "This is the body of the email." // Replace with your desired email content
+                        Data = request.Body // Replace with your desired email content
                     }
-                }
-            },
-            Tags = new List<MessageTag>
-            {
-                new MessageTag
-                {
-                    Name = "SES-Environment",
-                    Value = "sandbox"
                 }
             }
         };
