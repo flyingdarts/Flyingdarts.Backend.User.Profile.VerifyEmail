@@ -15,11 +15,6 @@ public class SendVerifyUserEmailCommandHandler : IRequestHandler<SendVerifyUserE
     }
     public async Task Handle(SendVerifyUserEmailCommand request, CancellationToken cancellationToken)
     {
-        await SendEmail(cancellationToken);
-    }
-
-    public async Task SendEmail(CancellationToken cancellationToken)
-    {
         // Build the email request
         var sendRequest = new SendEmailRequest
         {
@@ -53,10 +48,16 @@ public class SendVerifyUserEmailCommandHandler : IRequestHandler<SendVerifyUserE
         try
         {
             await _emailService.SendEmailAsync(sendRequest, cancellationToken);
+            request.Context.Logger.Log("Email sent");
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Email sending failed. Error message: " + ex.Message);
+            request.Context.Logger.Log(ex.Message);
         }
+    }
+
+    public async Task SendEmail(CancellationToken cancellationToken)
+    {
+        
     }
 }

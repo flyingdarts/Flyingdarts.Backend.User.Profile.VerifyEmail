@@ -1,4 +1,5 @@
 using Amazon.Lambda.APIGatewayEvents;
+using Amazon.Lambda.Core;
 using Flyingdarts.Lambdas.Shared;
 using Flyingdarts.Shared;
 using MediatR;
@@ -33,9 +34,9 @@ public class InnerHandler
     /// </summary>
     /// <param name="request">The socket message request containing the SendVerifyUserEmailCommand.</param>
     /// <returns>The APIGatewayProxyResponse.</returns>
-    public async Task Handle()
+    public async Task Handle(ILambdaContext context)
     {
         // Send the message to the mediator for further processing
-        await _mediator.Send(new SendVerifyUserEmailCommand());
+        await _mediator.Send(new SendVerifyUserEmailCommand(context));
     }
 }

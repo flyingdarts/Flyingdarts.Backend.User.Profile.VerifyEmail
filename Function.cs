@@ -1,4 +1,5 @@
 using Amazon.Lambda.APIGatewayEvents;
+using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;
 using Amazon.Lambda.Serialization.SystemTextJson;
 using Flyingdarts.Lambdas.Shared;
@@ -13,10 +14,10 @@ var innerHandler = new InnerHandler(services);
 var serializer = new DefaultLambdaJsonSerializer(x => x.PropertyNameCaseInsensitive = true);
 
 // Define the Lambda function handler
-var handler = async () =>
+var handler = (ILambdaContext context) =>
 {
     // Handle the socketRequest using the innerHandler
-    await innerHandler.Handle();
+    innerHandler.Handle(context).RunSynchronously();
 };
 
 // Create and run the Lambda function
