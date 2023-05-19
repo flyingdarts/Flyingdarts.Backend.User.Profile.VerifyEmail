@@ -39,6 +39,14 @@ public class SendVerifyUserEmailCommandHandler : IRequestHandler<SendVerifyUserE
                         Data = "This is the body of the email." // Replace with your desired email content
                     }
                 }
+            },
+            Tags = new List<MessageTag>
+            {
+                new MessageTag
+                {
+                    Name = "SES-Environment",
+                    Value = "sandbox"
+                }
             }
         };
 
