@@ -1,20 +1,17 @@
-﻿using Amazon.Lambda.APIGatewayEvents;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Flyingdarts.Persistence;
-using MediatR;
-using System.Collections.Generic;
-using System;
-using Amazon;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
+using MediatR;
 
 public class SendVerifyUserEmailCommandHandler : IRequestHandler<SendVerifyUserEmailCommand>
 {
     private readonly IAmazonSimpleEmailService _emailService;
     public SendVerifyUserEmailCommandHandler(IAmazonSimpleEmailService emailService)
     {
-        this._emailService = emailService;
+        _emailService = emailService;
     }
     public async Task Handle(SendVerifyUserEmailCommand request, CancellationToken cancellationToken)
     {
@@ -26,7 +23,7 @@ public class SendVerifyUserEmailCommandHandler : IRequestHandler<SendVerifyUserE
         // Build the email request
         var sendRequest = new SendEmailRequest
         {
-            Source = "no-reply@flyingdarts.net", // Replace with your email address
+            Source = "support@flyingdarts.net", // Replace with your email address
             Destination = new Destination
             {
                 ToAddresses = new List<string> { "mike@flyingdarts.net" } // Replace with the recipient's email address
