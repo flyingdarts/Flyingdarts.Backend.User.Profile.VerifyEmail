@@ -15,10 +15,9 @@ var innerHandler = new InnerHandler(services);
 var serializer = new DefaultLambdaJsonSerializer(x => x.PropertyNameCaseInsensitive = true);
 
 // Define the Lambda function handler
-var handler = async (string input, ILambdaContext context) =>
+var handler = async (VerifyEmailCommandOptions input, ILambdaContext context) =>
 {
-    var test = JsonSerializer.Deserialize<VerifyEmailCommandOptions>(input);
-    context.Logger.Log(JsonSerializer.Serialize(test));
+    context.Logger.Log(JsonSerializer.Serialize(input));
     // Handle the socketRequest using the innerHandler
     await innerHandler.Handle(context);
 };
