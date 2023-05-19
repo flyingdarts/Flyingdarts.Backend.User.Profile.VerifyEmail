@@ -38,6 +38,6 @@ public class InnerHandler
     {
         command.Context = context;
         // Send the message to the mediator for further processing
-        await _mediator.Send(new SendVerifyUserEmailCommand(context));
+        await _mediator.Send(new SendVerifyUserEmailCommand());
     }
 }
