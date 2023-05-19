@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;
@@ -16,6 +17,8 @@ var serializer = new DefaultLambdaJsonSerializer(x => x.PropertyNameCaseInsensit
 // Define the Lambda function handler
 var handler = async (string input, ILambdaContext context) =>
 {
+    var test = JsonSerializer.Deserialize<VerifyEmailCommandOptions>(input);
+    context.Logger.Log(JsonSerializer.Serialize(test));
     // Handle the socketRequest using the innerHandler
     await innerHandler.Handle(context);
 };
@@ -25,3 +28,9 @@ await LambdaBootstrapBuilder.Create(handler, serializer)
     .Build()
     .RunAsync();
 
+public class VerifyEmailCommandOptions
+{
+    public string Email { get; set; }
+    public string Subject { get; set; }
+    public string Body { get; set; }
+}
