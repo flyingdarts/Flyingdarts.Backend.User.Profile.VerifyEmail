@@ -4,6 +4,8 @@ public class SendVerifyUserEmailCommandValidator : AbstractValidator<SendVerifyU
 {
     public SendVerifyUserEmailCommandValidator()
     {
-        
+        RuleFor(x => x.Email).EmailAddress();
+        RuleFor(x => x.Subject).NotEmpty();
+        RuleFor(x => x.Body).NotEmpty();
     }
 }

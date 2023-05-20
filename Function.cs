@@ -16,10 +16,10 @@ var innerHandler = new InnerHandler(services);
 var serializer = new DefaultLambdaJsonSerializer(x => x.PropertyNameCaseInsensitive = true);
 
 // Define the Lambda function handler
-var handler = async (MySQSEvent sqsEvent, ILambdaContext context) =>
+var handler = async (SQSEvent.SQSMessage sqsEvent, ILambdaContext context) =>
 {
     context.Logger.Log(JsonSerializer.Serialize(sqsEvent));
-    var command = JsonSerializer.Deserialize<SendVerifyUserEmailCommand>(sqsEvent.Message.Body);
+    var command = JsonSerializer.Deserialize<SendVerifyUserEmailCommand>(sqsEvent.Body);
     await innerHandler.Handle(command, context);
 };
 
@@ -27,8 +27,3 @@ var handler = async (MySQSEvent sqsEvent, ILambdaContext context) =>
 await LambdaBootstrapBuilder.Create(handler, serializer)
     .Build()
     .RunAsync();
-
-public class MySQSEvent
-{
-    public SQSEvent.SQSMessage Message { get; set; }
-}
