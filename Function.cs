@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.Json;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
@@ -16,10 +17,10 @@ var innerHandler = new InnerHandler(services);
 var serializer = new DefaultLambdaJsonSerializer(x => x.PropertyNameCaseInsensitive = true);
 
 // Define the Lambda function handler
-var handler = async (SQSEvent.SQSMessage sqsEvent, ILambdaContext context) =>
+var handler = async (SQSRecordSet records, ILambdaContext context) =>
 {
-    context.Logger.Log(JsonSerializer.Serialize(sqsEvent));
-    var command = JsonSerializer.Deserialize<SendVerifyUserEmailCommand>(sqsEvent.Body);
+    context.Logger.Log(JsonSerializer.Serialize(records));
+    var command = JsonSerializer.Deserialize<SendVerifyUserEmailCommand>(records.Records.First().Body);
     await innerHandler.Handle(command, context);
 };
 
@@ -27,3 +28,8 @@ var handler = async (SQSEvent.SQSMessage sqsEvent, ILambdaContext context) =>
 await LambdaBootstrapBuilder.Create(handler, serializer)
     .Build()
     .RunAsync();
+
+public class SQSRecordSet 
+{
+    public SQSEvent.SQSMessage[] Records { get; set; }
+}
