@@ -3,6 +3,7 @@ using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;
 using Amazon.Lambda.Serialization.SystemTextJson;
+using Amazon.Lambda.SQSEvents;
 using Flyingdarts.Lambdas.Shared;
 
 // Get the service provider
@@ -15,11 +16,11 @@ var innerHandler = new InnerHandler(services);
 var serializer = new DefaultLambdaJsonSerializer(x => x.PropertyNameCaseInsensitive = true);
 
 // Define the Lambda function handler
-var handler = async (SendVerifyUserEmailCommand input, ILambdaContext context) =>
+var handler = async (MySQSEvent sqsEvent, ILambdaContext context) =>
 {
-    context.Logger.Log(JsonSerializer.Serialize(input));
-    // Handle the socketRequest using the innerHandler
-    await innerHandler.Handle(input, context);
+    context.Logger.Log(JsonSerializer.Serialize(sqsEvent));
+    var command = JsonSerializer.Deserialize<SendVerifyUserEmailCommand>(sqsEvent.Message.Body);
+    await innerHandler.Handle(command, context);
 };
 
 // Create and run the Lambda function
@@ -27,9 +28,7 @@ await LambdaBootstrapBuilder.Create(handler, serializer)
     .Build()
     .RunAsync();
 
-public class VerifyEmailCommandOptions
+public class MySQSEvent
 {
-    public string Email { get; set; }
-    public string Subject { get; set; }
-    public string Body { get; set; }
+    public SQSEvent.SQSMessage Message { get; set; }
 }
