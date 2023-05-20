@@ -1,11 +1,9 @@
 using System.Linq;
 using System.Text.Json;
-using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;
 using Amazon.Lambda.Serialization.SystemTextJson;
 using Amazon.Lambda.SQSEvents;
-using Flyingdarts.Lambdas.Shared;
 
 // Get the service provider
 var services = ServiceFactory.GetServiceProvider();

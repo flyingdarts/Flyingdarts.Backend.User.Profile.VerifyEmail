@@ -1,7 +1,4 @@
-using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
-using Flyingdarts.Lambdas.Shared;
-using Flyingdarts.Shared;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
